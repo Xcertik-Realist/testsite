@@ -1,19 +1,10 @@
 export default function Hero() {
   return (
-    <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDp1KEDEkZurCj3TOLT58eqtU7BAeWoJWr-rM6KzqGHho-9Au3VjLl24DOuEwIU1A2abJSWh4roA_HNmdYPNuzG9Gy26qan3tiBsoiP9BIPZa21_Y7msohuWLeaZWXjy3qNDwM_6SBX-NfEYYgzYb745mPEOq8iMyBd6k1s630ZnycXT2Tip1WWOo2rZ-MYUI4BBe8AJ-0inzr19mwFP5anJb9OI5fg8Q9FFEY_q-5IbkZ3CtZJMpovQraSBi0DYmP__PA3dij3')" }}
-      />
-      <div className="absolute inset-0 bg-black/40" />
-      <div className="relative text-center text-white max-w-4xl px-6">
-        <h1 className="text-5xl md:text-7xl font-black mb-6">
-          The Perfect Centrepiece for Your Christmas
-        </h1>
-        <p className="text-xl mb-8">Sustainably-grown, premium Scandinavian firs delivered to your door.</p>
-        <div className="inline-block bg-red-700 text-white px-8 py-3 rounded-full font-bold">
-          Shipping Starts December 1st
-        </div>
+    <section className="relative h-screen flex items-center justify-center bg-cover bg-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1543589077-47a9392b6c3f?q=80&w=2070')"}}>
+      <div className="absolute inset-0 bg-black/50"></div>
+      <div className="relative text-center text-white z-10 px-6">
+        <h1 className="text-5xl md:text-7xl font-black mb-6">Real Christmas Trees<br/>Delivered Fresh</h1>
+        <p className="text-2xl mb-8">Premium Nordmann Firs • From 1st December</p>
       </div>
     </section>
   );
