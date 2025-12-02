@@ -34,9 +34,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addToCart = (product: any) => {
     setItems(prev => {
-      const existing = prev.find(i => 
-        i.id === product.id && 
-        i.selectedSize === product.selectedSize && 
+      const existing = prev.find(i =>
+        i.id === product.id &&
+        i.selectedSize === product.selectedSize &&
         i.selectedStand === product.selectedStand
       );
       if (existing) {
