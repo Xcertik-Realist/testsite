@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShoppingBag } from "lucide-react";   // ← FIXED
+import { ShoppingBag } from "lucide-react";
 
 export default function Header() {
   return (
@@ -11,7 +11,7 @@ export default function Header() {
           </div>
           <h1 className="text-2xl font-bold text-forest-green">ScandinavianFirs</h1>
         </Link>
-        <Link href="/checkout" className="relative">
+        <Link href="/checkout">
           <ShoppingBag className="w-7 h-7 text-forest-green" />
         </Link>
       </div>
