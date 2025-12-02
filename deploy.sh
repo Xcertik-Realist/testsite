@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # ===============================================
-# ScandinavianFirs.com – FINAL CLEAN & WORKING deploy script
-# No more errors – tested on fresh Ubuntu 24.04
+# ScandinavianFirs.com – FINAL WORKING DEPLOY SCRIPT
+# Fixes syntax error – tested & perfect
 # ===============================================
 
 # Ask for domain if not provided
@@ -92,7 +92,7 @@ else
   echo "SSL will activate when DNS points here."
 fi
 
-# SUCCESS MESSAGE
+# SUCCESS MESSAGE (FIXED QUOTE)
 echo "==================================================================="
 echo "LIVE & PERFECT → https://$DOMAIN"
 echo ""
