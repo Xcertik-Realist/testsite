@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Premium Nordmann Fir",
+    "price": 89,
+    "height": "6-7ft (most popular)",
+    "image": "https://images.unsplash.com/photo-1543589077-47a9392b6c3f?w=800&q=80"
+  },
+  {
+    "id": 2,
+    "name": "Classic Norway Spruce",
+    "price": 69,
+    "height": "6-7ft",
+    "image": "https://images.unsplash.com/photo-1609856269178-2d1499f0d6c9?w=800&q=80"
+  },
+  {
+    "id": 3,
+    "name": "Luxury Fraser Fir",
+    "price": 119,
+    "height": "7-8ft",
+    "image": "https://images.unsplash.com/photo-1579684427271-2b08b0618235?w=800&q=80"
+  }
+]
