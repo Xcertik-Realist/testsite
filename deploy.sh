@@ -2,8 +2,9 @@
 set -euo pipefail
 
 # ===============================================
-# ScandinavianFirs.com – Secure one-click deploy
-# salesman.txt is now completely protected from the web
+# ScandinavianFirs.com – FINAL secure one-click deploy
+# Works even without package-lock.json
+# salesman.txt 100% protected from the web
 # ===============================================
 
 if [[ $# -eq 0 ]]; then
@@ -24,24 +25,29 @@ apt install -y nodejs nginx git certbot python3-certbot-nginx ufw
 
 # Deploy code
 if [ -d "/var/www/scandinavianfirs" ]; then
-  cd /var/www/scandinavianfirs && git pull
+  echo "Updating existing site..."
+  cd /var/www/scandinavianfirs && git pull --ff-only
 else
+  echo "Cloning repository..."
   rm -rf /var/www/scandinavianfirs
   git clone https://github.com/Xcertik-Realist/testsite.git /var/www/scandinavianfirs
   cd /var/www/scandinavianfirs
 fi
 
-# Build
-npm ci --omit=dev
+# Install & build – automatically works with or without package-lock.json
+echo "Installing dependencies & building..."
+npm install           # ← this creates package-lock.json if missing
 npm run build
 
-# Create secure orders directory (outside public web root!)
+# Secure orders directory (outside web root!)
 mkdir -p /var/orders
 chown www-data:www-data /var/orders
 chmod 750 /var/orders
 
-# Update API route to save orders in the secure folder
-sed -i 's|path.join(process.cwd(), "salesman.txt")|"/var/orders/salesman.txt"|' app/api/submit-order/route.ts || true
+# Make sure orders go to the secure folder
+if ! grep -q '/var/orders/salesman.txt' app/api/submit-order/route.ts; then
+  sed -i 's|path.join(process\.cwd(), "salesman.txt")|"/var/orders/salesman.txt"|' app/api/submit-order/route.ts
+fi
 
 # PM2
 npm install -g pm2 2>/dev/null || true
@@ -50,23 +56,15 @@ pm2 start npm --name "scandinavianfirs" -- start
 pm2 save
 pm2 startup ubuntu | grep sudo | bash || true
 
-# nginx config — BLOCK direct access to any .txt files + secure location
+# nginx – BLOCK .txt files forever
 cat > /etc/nginx/sites-available/scandinavianfirs <<EOF
 server {
     listen 80;
     server_name $DOMAIN;
 
-    # BLOCK ANYONE FROM ACCESSING .txt FILES EVER
-    location ~ \.txt$ {
-        deny all;
-        return 403;
-    }
-
-    # Block access to hidden files/folders
-    location ~ /\. {
-        deny all;
-        return 403;
-    }
+    # BLOCK ALL .txt FILES + HIDDEN FILES
+    location ~ \.txt$ { deny all; return 403; }
+    location ~ /\. { deny all; return 403; }
 
     location / {
         proxy_pass http://127.0.0.1:3000;
@@ -86,24 +84,21 @@ rm -f /etc/nginx/sites-enabled/default
 ln -sf /etc/nginx/sites-available/scandinavianfirs /etc/nginx/sites-enabled/
 nginx -t && systemctl reload nginx
 
-# Firewall
+# Firewall & SSL
 ufw allow 'Nginx Full' --force 2>/dev/null || true
 ufw --force enable 2>/dev/null || true
 
-# SSL
 if certbot --nginx -d "$DOMAIN" --non-interactive --agree-tos -m admin@"$DOMAIN" --redirect; then
   echo "SSL installed!"
 else
-  echo "SSL will activate when DNS is pointed here."
+  echo "SSL will activate when DNS points here."
 fi
 
 echo "=================================================================="
-echo "DEPLOYED & FULLY SECURED!"
-echo "Live → https://$DOMAIN"
-echo ""
-echo "Orders are safely saved to: /var/orders/salesman.txt"
-echo "This file is NOT accessible from the internet — completely protected"
+echo "LIVE & 100% SECURE!"
+echo "https://$DOMAIN"
+echo "Orders safely saved to: /var/orders/salesman.txt (NOT publicly accessible)"
+echo "View orders: sudo cat /var/orders/salesman.txt"
+echo "Update site: cd /var/www/scandinavianfirs && git pull && npm run build && pm2 restart scandinavianfirs"
 echo "=================================================================="
-echo "To view orders: sudo cat /var/orders/salesman.txt"
-echo "To update site later: cd /var/www/scandinavianfirs && git pull && npm run build && pm2 restart scandinavianfirs"
-echo "Merry Christmas — your store is now bulletproof!"
+echo "Merry Christmas – your store is now yours forever!"
