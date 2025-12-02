@@ -1,4 +1,5 @@
 "use client";
+
 import { createContext, useContext, useState, useEffect } from "react";
 
 type CartItem = {
@@ -33,9 +34,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addToCart = (product: any) => {
     setItems(prev => {
-      const existing = prev.find(i => i.id === product.id);
+      const existing = prev.find(i =>
+        i.id === product.id &&
+        i.selectedSize === product.selectedSize &&
+        i.selectedStand === product.selectedStand
+      );
       if (existing) {
-        return prev.map(i => i.id === product.id ? { ...i, quantity: i.quantity + (product.quantity || 1) } : i);
+        return prev.map(i => i === existing ? { ...i, quantity: i.quantity + (product.quantity || 1) } : i);
       }
       return [...prev, { ...product, quantity: product.quantity || 1 }];
     });
