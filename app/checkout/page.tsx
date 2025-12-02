@@ -26,8 +26,8 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isValidPostcode, setIsValidPostcode] = useState<boolean | null>(null);
 
-  const deliveryPrices = { standard: 9.99, express: 14.99, chooseday: 19.99 };
-  const total = (Number(subtotal) + deliveryPrices[formData.deliveryOption]).toFixed(2);
+ const deliveryPrices = { standard: 9.99, express: 14.99, chooseday: 19.99 } as const;
+ const total = (Number(subtotal) + deliveryPrices[formData.deliveryOption as "standard" | "express" | "chooseday"]).toFixed(2);
 
   // Live postcode validation
   useEffect(() => {
